@@ -1,0 +1,24 @@
+# Shortcuts
+alias d "cd ~/dev"
+alias g "git"
+alias v "vim"
+alias dt "cd ~/Desktop"
+alias h "history"
+alias p "cd ~/dev/paradem"
+alias c "cd ~/dev/paradem/carmine"
+
+# GIT STUFF
+alias prune_origin "git remote prune origin"
+alias prune_local "git branch --merged master | grep -v 'master' | xargs git branch -d"
+
+alias l "ls -lF"
+
+# Navigation
+function ..    ; cd .. ; end
+function ...   ; cd ../.. ; end
+function ....  ; cd ../../.. ; end
+function ..... ; cd ../../../.. ; end
+
+# Utilities
+function g        ; git $argv ; end
+function grep     ; command grep --color=auto $argv ; end
