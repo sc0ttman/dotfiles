@@ -62,11 +62,11 @@ function fish_prompt
     #    printf '[%d] ' $last_status
     #end
 
-    if test $last_status -ne 0
-        set_color white -o
-        printf '[%d] ' $last_status
-        set_color normal
-    end
+    #if test $last_status -ne 0
+    #    set_color white -o
+    #    printf '[%d] ' $last_status
+    #    set_color normal
+    #end
     printf '$ '
 
     set_color normal
@@ -81,10 +81,9 @@ function _git_status
   set -l asterisk
 
   if _git_dirty
-    set asterisk "$asterisk*"
+    #set asterisk "$asterisk*"
+    printf '*'
   end
-
-  printf $asterisk
 end
 
 function demo-mode
