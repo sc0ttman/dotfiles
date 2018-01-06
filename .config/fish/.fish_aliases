@@ -2,6 +2,7 @@
 alias d "cd ~/dev"
 alias g "git"
 alias v "vim"
+#alias v "nvim"
 alias dt "cd ~/Desktop"
 alias h "history"
 alias p "cd ~/dev/paradem"

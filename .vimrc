@@ -1,33 +1,39 @@
+packadd minpac
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Minpac plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-packadd minpac
 call minpac#init()
 call minpac#add('itchyny/lightline.vim')
-" call minpac#add('altercation/vim-colors-solarized')
-" call minpac#add('joshdick/onedark.vim')
-call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
-call minpac#add('junegunn/fzf.vim')
+"call minpac#add('altercation/vim-colors-solarized')
+"call minpac#add('joshdick/onedark.vim')
+"call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
+"call minpac#add('junegunn/fzf.vim')
+call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
-call minpac#add('rakr/vim-one')
+"call minpac#add('rakr/vim-one')
 call minpac#add('ntpeters/vim-better-whitespace')
 call minpac#add('pangloss/vim-javascript')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
-call minpac#add('tpope/vim-speeddating')
+"call minpac#add('tpope/vim-speeddating')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
+call minpac#add('w0rp/ale')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
-call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
+" call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
+packadd matchit
 
-set backupdir=~/.vim/backups
+se backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
@@ -64,7 +70,7 @@ set report=0 " Show all changes
 set ruler " Show the cursor position
 set scrolloff=3 " Start scrolling three lines before horizontal border of window
 set sidescrolloff=3 " Start scrolling three columns before vertical border of window
-set showtabline=2 " Always show tab bar
+"set showtabline=2 " Always show tab bar
 set splitbelow " New window goes below
 set splitright " New windows goes right
 set title " Show the filename in the window titlebar
@@ -81,12 +87,13 @@ set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
 
 " Enable this if you mistype :w as :W or :q as :Q.
-nmap :W :w
-nmap :W! :w!
-nmap :Q :q
-nmap :Q! :q!
-nmap :Wq! :wq!
-nmap :WQ! :wq!
+" These slow down command mode response time. Why?
+"nmap :W :w
+"nmap :W! :w!
+"nmap :Q :q
+"nmap :Q! :q!
+"nmap :Wq! :wq!
+"nmap :WQ! :wq!
 
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
@@ -137,10 +144,35 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-let $FZF_DEFAULT_OPTS = '--reverse'
-nnoremap <leader>f :Files <cr>
-nnoremap <leader>s :Ag <cr>
+"let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+"let $FZF_DEFAULT_OPTS = '--reverse'
+"nnoremap <leader>f :FZF <cr>
+"nnoremap <leader>s :call KAg()<cr>
+"nnoremap <leader><plug>(fzf-complete-file-ag)
+
+"function! KAg()
+"  call fzf#vim#ag(input("Search: "), 0)
+"endfunction
+
+" https://robots.thoughtbot.com/faster-grepping-in-vim
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+" bind K to grep word under cursor
+" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>:w
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minpac
@@ -148,21 +180,23 @@ nnoremap <leader>s :Ag <cr>
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ALE configuration
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" \   'javascript': ['prettier'],
+let g:ale_fixers = {
+      \ 'ruby': ['rubocop'],
+      \}
+
+let g:ale_enabled = 1
+let g:ale_fix_on_save = 1
+let g:ale_sign_column_always = 1
+let g:ale_lint_delay=1000
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zm' : 'zc')<CR>
-inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
-
-
-augroup filetype_ruby
-  autocmd!
-
-  au BufRead,BufNewFile Rakefile,Capfile,Gemfile,.autotest,.irbrc,*.treetop,*.tt set ft=ruby syntax=ruby
-
-  "let ruby_operators = 1
-  "let ruby_space_errors = 1
-  "let ruby_fold = 1
-augroup END
+"nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zm' : 'zc')<CR>
+"inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
+"inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+"inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"

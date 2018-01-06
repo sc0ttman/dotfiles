@@ -52,3 +52,7 @@ Make sure to change the font to `Meslo LG L DZ Regular for Powerline` (Or one of
 Vim should be pretty self-contained as all the plugins are defined using Minpac in the conf.
 You should just be able to run `:PackUpdate` in vim and it will install the plugins.
 The only exception being the `YouCompleteMe` plugin where I had to actually run `./install.py` from `~/.vim/pack/minpac/start/YouCompleteMe` after it was downloaded.
+
+## Silver Searcher
+In order for :Ag to run you need to:
+`brew install the_silver_searcher`
