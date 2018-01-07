@@ -1,0 +1,70 @@
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+[merge]
+  tool = vimdiff
+  log = true
+[include] # use separate file for username / github token / etc
+   path = ~/.gitconfig.local
+# [init]
+#   templatedir = ~/.git_template
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  required = true
+  process = git-lfs filter-process
+[url "git@github.com:"]
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "git://github.com/"
+[url "git://github.com/"]
+  insteadOf = "github:"
+[url "git@gist.github.com:"]
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "git://gist.github.com/"
+[url "git://gist.github.com/"]
+  insteadOf = "gist:"
+[credential]
+  helper = osxkeychain
+[push]
+  default = simple
+[color]
+  ui = auto
+[diff]
+  tool = vimdiff
+  colorMoved = zebra
+[alias]
+  c = commit
+  cm = commit -m
+  co = checkout
+  cob = checkout -b
+  br = branch -av # Show all branches
+  aa = add --all
+  up = pull
+  pl = pull
+  p = push
+  pf = push -f
+  s = status -s
+  m = merge
+  ls = ls-files
+  d = diff
+  undo = reset --soft 'HEAD^'
+  df = diff --color --color-words --abbrev
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  # Show the diff between the latest commit and the current state
+  d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+  #############
+  sa = stash apply
+  sc = stash clear
+  sd = stash drop
+  sl = stash list
+  sp = stash pop
+  ss = stash save
+  sw = stash show
+  #############
+  cp = cherry-pick
+  cpa = cherry-pick --abort
+  cpc = cherry-pick --continue
+  #############
