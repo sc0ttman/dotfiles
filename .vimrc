@@ -20,6 +20,8 @@ call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('w0rp/ale')
+"call minpac#add('vim-airline/vim-airline')
+call minpac#add('scrooloose/nerdtree')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -31,13 +33,14 @@ set nocompatible
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
-packadd matchit
+packadd matchit " Enable built-in plugin for extended % matching
 
 se backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
 set number " Show line numbers
+set relativenumber " Turn both on for Hybrid mode
 set numberwidth=3 " Width of "gutter" column used for numbering
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 
@@ -57,6 +60,7 @@ set smarttab  " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes 
 set cursorline " Highlight current line
 set laststatus=2 " Always show status line
 set esckeys " Allow cursor keys in insert mode
+" Folding is slow and sorta broken
 "set foldcolumn=0 " Column to show folds
 "set foldenable " Enable folding
 "set foldlevelstart=20 " Close all folds by default
@@ -94,31 +98,33 @@ set wrapscan " Searches wrap around end of file
 "nmap :Q! :q!
 "nmap :Wq! :wq!
 "nmap :WQ! :wq!
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
 
+" Strip whitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
 " Buffers
-" Move to the previous buffer with "gp"
-nnoremap gp :bp<CR>
-
-" Move to the next buffer with "gn"
-nnoremap gn :bn<CR>
-
-" List all possible buffers with "gl"
-nnoremap gl :ls<CR>
-
-" List all possible buffers with "gb" and accept a new buffer argument [1]
-nnoremap gb :ls<CR>:b
+nnoremap gp :bp<CR> " Move to the previous buffer with "gp"
+nnoremap gn :bn<CR> " Move to the next buffer with "gn"
+nnoremap gl :ls<CR> " List all possible buffers with "gl"
+nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffer argument [1]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 set background=dark
-
 "g:onedark_termcolors
 colorscheme onedark
-
 "let g:lightline = {
 "      \ 'colorscheme': 'onedark',
 "      \ }
@@ -142,7 +148,7 @@ if has("gui_running")
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" FZF
+" Fuzzy finding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 "let $FZF_DEFAULT_OPTS = '--reverse'
@@ -200,3 +206,14 @@ let g:ale_lint_delay=1000
 "inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
 "inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 "inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
+
+" Airline config
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#fnamemod = ':t'
+
+" NERDTree
+map <C-n> :NERDTreeToggle<CR>
+" open a NERDTree automatically when vim starts up if no files were specified?
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
