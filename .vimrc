@@ -7,25 +7,23 @@ call minpac#init()
 call minpac#add('itchyny/lightline.vim')
 "call minpac#add('altercation/vim-colors-solarized')
 "call minpac#add('joshdick/onedark.vim')
+"call minpac#add('rakr/vim-one')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('mileszs/ack.vim')
-"call minpac#add('nelstrom/vim-textobj-rubyblock')
 call minpac#add('vim-ruby/vim-ruby')
-"call minpac#add('rakr/vim-one')
 call minpac#add('ntpeters/vim-better-whitespace')
 call minpac#add('pangloss/vim-javascript')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
-"call minpac#add('tpope/vim-speeddating')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('w0rp/ale')
-"call minpac#add('vim-airline/vim-airline')
 call minpac#add('scrooloose/nerdtree')
-"call minpac#add('wincent/command-t')
-"call minpac#add('ctrlpvim/ctrlp.vim')
+call minpac#add('Xuyuanp/nerdtree-git-plugin')
+call minpac#add('mattn/emmet-vim')
+call minpac#add('airblade/vim-gitgutter')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -94,14 +92,13 @@ set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
 
+" Strip whitespace
+autocmd BufEnter * EnableStripWhitespaceOnSave
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Custom key mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable this if you mistype :w as :W or :q as :Q.
-" These slow down command mode response time. Why?
-"nmap :W :w
-"nmap :W! :w!
-"nmap :Q :q
-"nmap :Q! :q!
-"nmap :Wq! :wq!
-"nmap :WQ! :wq!
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
 cnoreabbrev Qall! qall!
@@ -112,9 +109,6 @@ cnoreabbrev WQ wq
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
-
-" Strip whitespace
-autocmd BufEnter * EnableStripWhitespaceOnSave
 
 " Buffers
 nnoremap gp :bp<CR> " Move to the previous buffer with "gp"
@@ -129,10 +123,10 @@ syntax on
 set background=dark
 "g:onedark_termcolors
 colorscheme onedark
-"let g:lightline = {
-"      \ 'colorscheme': 'onedark',
-"      \ }
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Lightline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
       \ 'colorscheme': 'onedark',
       \ 'active': {
@@ -189,23 +183,9 @@ command! PackClean call minpac#clean()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ack
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
- if executable('ag')
-   let g:ackprg = 'ag --vimgrep'
- endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" netrw
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
- " let g:netrw_preview = 1
- " let g:netrw_banner = 0
- " let g:netrw_liststyle = 3
- " let g:netrw_browse_split = 4
- " let g:netrw_altv = 1
- " let g:netrw_winsize = 25
- " augroup ProjectDrawer
- "   autocmd!
- "   autocmd VimEnter * :Vexplore
- " augroup END
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE configuration
@@ -221,20 +201,43 @@ let g:ale_sign_column_always = 1
 let g:ale_lint_delay=1000
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Config
+" NERDTree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <C-n> :NERDTreeToggle<CR>
+" open a NERDTree automatically when vim starts up if no files were specified?
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" netrw (If not using NERDTree)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" let g:netrw_preview = 1
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" GitGutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Code folding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zm' : 'zc')<CR>
 "inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
 "inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 "inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#fnamemod = ':t'
-
-" NERDTree
-map <C-n> :NERDTreeToggle<CR>
-" open a NERDTree automatically when vim starts up if no files were specified?
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
