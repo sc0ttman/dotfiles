@@ -7,9 +7,10 @@ call minpac#init()
 call minpac#add('itchyny/lightline.vim')
 "call minpac#add('altercation/vim-colors-solarized')
 "call minpac#add('joshdick/onedark.vim')
-"call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
-"call minpac#add('junegunn/fzf.vim')
+call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
+call minpac#add('junegunn/fzf.vim')
 call minpac#add('mileszs/ack.vim')
+"call minpac#add('nelstrom/vim-textobj-rubyblock')
 call minpac#add('vim-ruby/vim-ruby')
 "call minpac#add('rakr/vim-one')
 call minpac#add('ntpeters/vim-better-whitespace')
@@ -19,9 +20,12 @@ call minpac#add('tpope/vim-fugitive')
 "call minpac#add('tpope/vim-speeddating')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-endwise')
 call minpac#add('w0rp/ale')
 "call minpac#add('vim-airline/vim-airline')
 call minpac#add('scrooloose/nerdtree')
+"call minpac#add('wincent/command-t')
+"call minpac#add('ctrlpvim/ctrlp.vim')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -150,15 +154,15 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fuzzy finding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-"let $FZF_DEFAULT_OPTS = '--reverse'
-"nnoremap <leader>f :FZF <cr>
-"nnoremap <leader>s :call KAg()<cr>
-"nnoremap <leader><plug>(fzf-complete-file-ag)
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+let $FZF_DEFAULT_OPTS = '--reverse'
+nnoremap <leader>f :FZF <cr>
+nnoremap <leader>s :call KAg()<cr>
+" nnoremap <leader><plug>(fzf-complete-file-ag)
 
-"function! KAg()
-"  call fzf#vim#ag(input("Search: "), 0)
-"endfunction
+function! KAg()
+  call fzf#vim#ag(input("Search: "), 0)
+endfunction
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim
 " The Silver Searcher
@@ -173,18 +177,35 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-" bind K to grep word under cursor
-" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<SPACE>:w
+" bind '\ag' to search for word under cursor
+nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minpac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ack
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ if executable('ag')
+   let g:ackprg = 'ag --vimgrep'
+ endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" netrw
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ " let g:netrw_preview = 1
+ " let g:netrw_banner = 0
+ " let g:netrw_liststyle = 3
+ " let g:netrw_browse_split = 4
+ " let g:netrw_altv = 1
+ " let g:netrw_winsize = 25
+ " augroup ProjectDrawer
+ "   autocmd!
+ "   autocmd VimEnter * :Vexplore
+ " augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE configuration
