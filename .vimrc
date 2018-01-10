@@ -25,6 +25,8 @@ call minpac#add('scrooloose/nerdtree')
 call minpac#add('Xuyuanp/nerdtree-git-plugin')
 call minpac#add('mattn/emmet-vim')
 call minpac#add('airblade/vim-gitgutter')
+call minpac#add('janko-m/vim-test')
+call minpac#add('jgdavey/tslime.vim')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -49,6 +51,9 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 
 set autoindent " Copy indent from last line when starting new line
 set backspace=indent,eol,start
+set clipboard=unnamed
+"set formatoptions-=cro
+set autoread " If a file is changed outside of vim, automatically reload it without asking
 set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
 set encoding=utf-8 nobomb " BOM often causes trouble
@@ -228,6 +233,22 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim test
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let test#strategy = "tslime" " Use Send_to_Tmux() method in tslime.vim for tests
+nnoremap <leader>tn :TestNearest<CR>
+nnoremap <leader>tf :TestFile<CR>
+nnoremap <leader>ts :TestSuite<CR>
+nnoremap <leader>tl :TestLast<CR>
+nnoremap <leader>tv :TestVisit<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tslime
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Code folding
