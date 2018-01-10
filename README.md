@@ -46,6 +46,7 @@ Download a theme from here: https://github.com/mbadolato/iTerm2-Color-Schemes
 Or use one of the files in the repo. `TheOne.itermcolors` or `ayu.itermcolors`
 
 Make sure to change the font to `Meslo LG L DZ Regular for Powerline` (Or one of the other Meslo fonts) so the custom characters work.
+Also, make sure to turn on the option: `General > Selection > Applications in terminal may access clipboard`.
 
 ## Vim
 
