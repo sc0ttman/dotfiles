@@ -5,10 +5,12 @@
 [merge]
   tool = vimdiff
   log = true
-[include] # use separate file for username / github token / etc
+[github]
+  user = sc0ttman
+[include]
    path = ~/.gitconfig.local
-# [init]
-#   templatedir = ~/.git_template
+[init]
+  templatedir = ~/.git_template
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
@@ -35,7 +37,10 @@
 [diff]
   tool = vimdiff
   colorMoved = zebra
+[rebase]
+  autosquash = true
 [alias]
+  ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
   c = commit
   cm = commit -m
   co = checkout
