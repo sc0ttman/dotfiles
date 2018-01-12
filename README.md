@@ -50,7 +50,10 @@ Also, make sure to turn on the option: `General > Selection > Applications in te
 
 ## Vim
 Install the latest vim from Homebrew:
-`$ brew install vim`
+`$ brew install vim` or `neovim`
+
+Install Ctags
+`$ brew install ctags`
 
 Create the following folders as set in the `.vimrc`
 ```
