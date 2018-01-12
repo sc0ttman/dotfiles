@@ -6,7 +6,7 @@ packadd minpac
 call minpac#init()
 call minpac#add('itchyny/lightline.vim')
 "call minpac#add('altercation/vim-colors-solarized')
-"call minpac#add('joshdick/onedark.vim')
+call minpac#add('joshdick/onedark.vim')
 "call minpac#add('rakr/vim-one')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
@@ -40,14 +40,17 @@ filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
 packadd matchit " Enable built-in plugin for extended % matching
 
-se backupdir=~/.vim/backups
+set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
+set nolist " performance - don't render special chars (tabs, trails, ...)
 set number " Show line numbers
-set relativenumber " Turn both on for Hybrid mode
+set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
 set numberwidth=3 " Width of "gutter" column used for numbering
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+"highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+set lazyredraw " performance gain
+set ttyfast " performance gain
 
 set autoindent " Copy indent from last line when starting new line
 set backspace=indent,eol,start
@@ -65,10 +68,12 @@ set incsearch " Highlight dynamically as pattern is typed
 set ignorecase " Ignore case of searches
 set smartcase " Ignore 'ignorecase' if search patter contains uppercase characters
 set smarttab  " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces
-set cursorline " Highlight current line
+set cursorline " Highlight current line - PERFORMANCE LOSS
 set laststatus=2 " Always show status line
 set esckeys " Allow cursor keys in insert mode
 " Folding is slow and sorta broken
+set foldlevel=0 " Performance
+set foldmethod=manual
 "set foldcolumn=0 " Column to show folds
 "set foldenable " Enable folding
 "set foldlevelstart=20 " Close all folds by default
@@ -125,7 +130,7 @@ nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffe
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax on
+syntax on " Syntax Highlighting - PERFORMANCE LOSS
 set background=dark
 "g:onedark_termcolors
 colorscheme onedark

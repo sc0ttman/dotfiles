@@ -2,7 +2,7 @@
 
 ## Fish Shell
 
-Fish Shell Installation (latest):
+Fish Shell Installation:
 `brew install fish`
 
 add the shell to the system know shells: `echo /usr/local/bin/fish | sudo tee -a /etc/shells`
@@ -12,7 +12,7 @@ make fish your default shell:
 
 The Fish Shell configuration folder is located under: `~/.config/fish/`
 
-The main configuration file is: `~/.config/fish/config.fish`, i source here 2 files.
+The main configuration file is: `~/.config/fish/config.fish`, with 2 other sourced files:
 
 ```
 source ~/.fish_aliases
@@ -38,7 +38,7 @@ cd ..
 rm -rf fonts
 ```
 
-### iTerm 2
+## iTerm 2
 
 Get the latest version at http://www.iterm2.com/
 
@@ -49,9 +49,19 @@ Make sure to change the font to `Meslo LG L DZ Regular for Powerline` (Or one of
 Also, make sure to turn on the option: `General > Selection > Applications in terminal may access clipboard`.
 
 ## Vim
+Install the latest vim from Homebrew:
+`$ brew install vim`
 
-Vim should be pretty self-contained as all the plugins are defined using Minpac in the conf.
-You should just be able to run `:PackUpdate` in vim and it will install the plugins.
+Create the following folders as set in the `.vimrc`
+```
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+set undodir=~/.vim/undo
+```
+Follow the [setup for One Dark syntax theme](https://github.com/joshdick/onedark.vim#installation). There are two files to copy to your `~/.vim folder`
+
+All the plugins are defined using Minpac in the conf. You should just be able to run `:PackUpdate` in vim and it will install the plugins.
+
 The only exception being the `YouCompleteMe` plugin where I had to actually run `./install.py` from `~/.vim/pack/minpac/start/YouCompleteMe` after it was downloaded.
 
 ## Silver Searcher
