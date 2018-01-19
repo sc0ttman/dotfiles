@@ -127,6 +127,8 @@ nnoremap gn :bn<CR> " Move to the next buffer with "gn"
 nnoremap gl :ls<CR> " List all possible buffers with "gl"
 nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffer argument [1]
 
+map <C-a> <esc>ggVG<CR> " Select all
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -162,11 +164,12 @@ endif
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
 nnoremap <leader>f :FZF <cr>
-nnoremap <leader>s :call KAg()<cr>
+nnoremap <leader>s :Ag <cr>
+" nnoremap <leader>s :call KAg()<cr>
 " nnoremap <leader><plug>(fzf-complete-file-ag)
 
 function! KAg()
-  call fzf#vim#ag(input("Search: "), 0)
+  call fzf#vim#ag({'left': '15%'})
 endfunction
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim
@@ -184,6 +187,20 @@ endif
 
 " bind '\ag' to search for word under cursor
 nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" Advanced customization using autoload functions
+" inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minpac
@@ -218,6 +235,8 @@ map <C-n> :NERDTreeToggle<CR>
 " open a NERDTree automatically when vim starts up if no files were specified?
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+nnoremap <leader>nf :NERDTreeFind<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " netrw (If not using NERDTree)
@@ -262,6 +281,12 @@ let g:tslime_always_current_window = 1
 "inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
 "inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 "inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ruby config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ruby_indent_assignment_style = 'variable'
+let g:ruby_indent_access_modifier_style = 'normal'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline config
