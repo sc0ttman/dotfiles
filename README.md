@@ -55,6 +55,8 @@ Install the latest vim from Homebrew:
 Install Ctags
 `$ brew install ctags`
 
+Install Minpac: https://github.com/k-takata/minpac#linux-macos
+
 Create the following folders as set in the `.vimrc`
 ```
 set backupdir=~/.vim/backups

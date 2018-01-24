@@ -38,13 +38,20 @@ set nocompatible
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
-packadd matchit " Enable built-in plugin for extended % matching
+if !(has("nvim"))
+  packadd matchit " Enable built-in plugin for extended % matching
+  " runtime macros/matchit.vim
+endif
+
 
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
-set nolist " performance - don't render special chars (tabs, trails, ...)
+set encoding=utf-8 nobomb " BOM often causes trouble
+" set nolist " performance - don't render special chars (tabs, trails, ...)
+set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·
+",tab:▸␣ •¶
 set number " Show line numbers
 set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
 set numberwidth=3 " Width of "gutter" column used for numbering
@@ -59,7 +66,6 @@ set clipboard=unnamed
 set autoread " If a file is changed outside of vim, automatically reload it without asking
 set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
-set encoding=utf-8 nobomb " BOM often causes trouble
 set expandtab " Expand tabs to spaces
 set shiftwidth=2 " The # of spaces for indenting
 set softtabstop=2 " Tab key results in 2 spaces
@@ -70,16 +76,17 @@ set smartcase " Ignore 'ignorecase' if search patter contains uppercase characte
 set smarttab  " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces
 set cursorline " Highlight current line - PERFORMANCE LOSS
 set laststatus=2 " Always show status line
-set esckeys " Allow cursor keys in insert mode
+"set esckeys " Allow cursor keys in insert mode
 " Folding is slow and sorta broken
-set foldlevel=0 " Performance
-set foldmethod=manual
-"set foldcolumn=0 " Column to show folds
-"set foldenable " Enable folding
-"set foldlevelstart=20 " Close all folds by default
-"set foldmethod=syntax " Syntax are used to specify folds
-"set foldminlines=0 " Allow folding single lines
-"set foldnestmax=2 " Set max fold nesting level
+" set foldlevel=0 " Performance
+" set foldmethod=manual
+" set nofoldenable " Disable folds by default. 'zc' will enable
+set foldcolumn=0 " Column to show folds
+set foldenable " Enable folding
+set foldlevel=99 " Open all folds by default
+set foldmethod=syntax " Syntax are used to specify folds
+set foldminlines=0 " Allow folding single lines
+set foldnestmax=5 " Set max fold nesting level
 set history=1000 " Increase history from 20 default to 1000
 set noerrorbells " Disable error bells
 set ofu=syntaxcomplete#Complete " Set omni-completion method
@@ -129,6 +136,10 @@ nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffe
 
 map <C-a> <esc>ggVG<CR> " Select all
 
+" invisibles
+highlight NonText guifg=#4a4a59
+highlight SpecialKey guifg=white guibg=#cc0000
+nmap <leader>l :set list!<CR> " Shortcut to rapidly toggle `set list`
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -136,6 +147,7 @@ syntax on " Syntax Highlighting - PERFORMANCE LOSS
 set background=dark
 "g:onedark_termcolors
 colorscheme onedark
+let g:onedark_terminal_italics=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lightline
@@ -147,9 +159,15 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \   'gitbranch': 'fugitive#head',
+      \   'filename': 'LightlineFilename'
       \ },
       \ }
+
+" Show path to file not just filename
+function! LightlineFilename()
+  return expand('%')
+endfunction
 
 if has("gui_running")
    let s:uname = system("uname")
@@ -165,11 +183,11 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
 nnoremap <leader>f :FZF <cr>
 nnoremap <leader>s :Ag <cr>
-" nnoremap <leader>s :call KAg()<cr>
+"nnoremap <leader>s :call KAg()<cr>
 " nnoremap <leader><plug>(fzf-complete-file-ag)
 
 function! KAg()
-  call fzf#vim#ag({'left': '15%'})
+  call fzf#vim#ag('', {'bottom': '25%'})
 endfunction
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim
@@ -201,6 +219,15 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " Advanced customization using autoload functions
 " inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+
+" Show Ctags for current file
+command! FZFTagFile if !empty(tagfiles()) | call fzf#run({
+\   'source': "cat " . tagfiles()[0] . ' | grep "' . expand('%:@') . '"' . " | sed -e '/^\\!/d;s/\t.*//' ". ' |  uniq',
+\   'sink':   'tag',
+\   'options':  '+m',
+\   'left':     60,
+\ }) | else | echo 'No tags' | endif
+nnoremap <silent> <Leader>v :FZFTagFile<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minpac
@@ -277,7 +304,9 @@ let g:tslime_always_current_window = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Code folding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zm' : 'zc')<CR>
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+"nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
 "inoremap <expr> <CR>   pumvisible() ? "\<C-y>" : "\<CR>"
 "inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 "inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"

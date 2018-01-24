@@ -1,10 +1,20 @@
-# Shortcuts
-alias d "cd ~/dev"
-alias g "git"
-alias v "vim"
-#alias v "nvim"
-alias dt "cd ~/Desktop"
+alias v "nvim"
 alias h "history"
+
+alias rc 'bin/rails console'
+alias rt 'bin/rails test'
+alias rdm 'bin/rails db:migrate'
+alias rg 'bin/rails generate'
+alias rgm 'bin/rails generate migration'
+
+alias ea 'vim ~/.config/fish/.fish_aliases'
+alias et 'vim ~/.tmux.conf'
+alias ev 'vim ~/.vimrc'
+alias evi 'vim ~/.config/nvim/init.vim'
+
+# Shortcuts
+alias dt "cd ~/Desktop"
+alias d "cd ~/dev"
 alias p "cd ~/dev/paradem"
 alias c "cd ~/dev/paradem/carmine"
 
@@ -23,3 +33,6 @@ function ..... ; cd ../../../.. ; end
 # Utilities
 function g        ; git $argv ; end
 function grep     ; command grep --color=auto $argv ; end
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
