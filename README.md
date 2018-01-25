@@ -69,6 +69,10 @@ All the plugins are defined using Minpac in the conf. You should just be able to
 
 The only exception being the `YouCompleteMe` plugin where I had to actually run `./install.py` from `~/.vim/pack/minpac/start/YouCompleteMe` after it was downloaded.
 
+Get italics working
+- https://apple.stackexchange.com/a/267261
+- https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
+
 ## Silver Searcher
 In order for :Ag to run you need to:
 `brew install the_silver_searcher`

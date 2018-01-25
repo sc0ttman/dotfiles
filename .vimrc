@@ -27,6 +27,7 @@ call minpac#add('mattn/emmet-vim')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('janko-m/vim-test')
 call minpac#add('jgdavey/tslime.vim')
+call minpac#add('godlygeek/tabular')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -40,7 +41,7 @@ filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
 if !(has("nvim"))
   packadd matchit " Enable built-in plugin for extended % matching
-  " runtime macros/matchit.vim
+  runtime macros/matchit.vim
 endif
 
 
@@ -56,8 +57,13 @@ set number " Show line numbers
 set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
 set numberwidth=3 " Width of "gutter" column used for numbering
 "highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-set lazyredraw " performance gain
-set ttyfast " performance gain
+
+" Speed
+set lazyredraw
+set ttyfast
+if !has('nvim')
+  set ttyscroll=3
+endif
 
 set autoindent " Copy indent from last line when starting new line
 set backspace=indent,eol,start
@@ -88,6 +94,7 @@ set foldmethod=syntax " Syntax are used to specify folds
 set foldminlines=0 " Allow folding single lines
 set foldnestmax=5 " Set max fold nesting level
 set history=1000 " Increase history from 20 default to 1000
+set hidden " Allow hiding buffers with unsaved changes
 set noerrorbells " Disable error bells
 set ofu=syntaxcomplete#Complete " Set omni-completion method
 set report=0 " Show all changes
@@ -95,6 +102,8 @@ set ruler " Show the cursor position
 set scrolloff=3 " Start scrolling three lines before horizontal border of window
 set sidescrolloff=3 " Start scrolling three columns before vertical border of window
 "set showtabline=2 " Always show tab bar
+set showmatch "Briefly jump to a paren once it's balanced
+set matchtime=2 " (for only .2 seconds).
 set splitbelow " New window goes below
 set splitright " New windows goes right
 set title " Show the filename in the window titlebar
@@ -109,10 +118,21 @@ set wildmenu " Hitting TAB in command mode will show possible completions above 
 set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
-
+set nowrap " I don't always wrap lines...
+set linebreak " ...but when I do, I wrap whole words
+set guicursor= " dont change cursor in insert mode in nvim
 " Strip whitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
+if has('nvim')
+  " Hack to get C-h working in NeoVim
+  nmap <BS> <C-W>h
+
+  set termguicolors " true color support
+  set inccommand=nosplit " show results while typing a :substitute command
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " for colorschemes that still rely on this value
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom key mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -145,10 +165,9 @@ nmap <leader>l :set list!<CR> " Shortcut to rapidly toggle `set list`
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on " Syntax Highlighting - PERFORMANCE LOSS
 set background=dark
-"g:onedark_termcolors
-colorscheme onedark
 let g:onedark_terminal_italics=1
-
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+colorscheme onedark
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
