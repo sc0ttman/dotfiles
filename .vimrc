@@ -6,8 +6,9 @@ packadd minpac
 call minpac#init()
 call minpac#add('itchyny/lightline.vim')
 "call minpac#add('altercation/vim-colors-solarized')
-call minpac#add('joshdick/onedark.vim')
+" call minpac#add('joshdick/onedark.vim')
 "call minpac#add('rakr/vim-one')
+call minpac#add('mhartington/oceanic-next')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('mileszs/ack.vim')
@@ -43,7 +44,6 @@ if !(has("nvim"))
   packadd matchit " Enable built-in plugin for extended % matching
   runtime macros/matchit.vim
 endif
-
 
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
@@ -128,10 +128,9 @@ if has('nvim')
   " Hack to get C-h working in NeoVim
   nmap <BS> <C-W>h
 
-  set termguicolors " true color support
-  set inccommand=nosplit " show results while typing a :substitute command
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " for colorschemes that still rely on this value
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+  set inccommand=nosplit " show results while typing a :substitute command
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom key mappings
@@ -163,16 +162,25 @@ nmap <leader>l :set list!<CR> " Shortcut to rapidly toggle `set list`
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax on " Syntax Highlighting - PERFORMANCE LOSS
-set background=dark
-let g:onedark_terminal_italics=1
-"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-colorscheme onedark
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+syntax enable " Syntax Highlighting - PERFORMANCE LOSS
+" set background=dark
+" set t_ut=
+" let g:onedark_terminal_italics=1
+" colorscheme onedark
+
+let g:oceanic_next_terminal_bold = 1
+let g:oceanic_next_terminal_italic = 1
+colorscheme OceanicNext
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'oceanicnext',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]

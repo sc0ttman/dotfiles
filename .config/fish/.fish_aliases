@@ -1,20 +1,24 @@
 alias v "nvim"
 alias h "history"
 
-alias rc 'bin/rails console'
-alias rt 'bin/rails test'
-alias rdm 'bin/rails db:migrate'
-alias rg 'bin/rails generate'
-alias rgm 'bin/rails generate migration'
+alias brc 'bin/rails console'
+alias brt 'bin/rails test'
+alias cop 'bin/rubocop'
+alias brdm 'bin/rails db:migrate'
+alias brg 'bin/rails generate'
+alias brgm 'bin/rails generate migration'
 
 alias ea 'vim ~/.config/fish/.fish_aliases'
 alias et 'vim ~/.tmux.conf'
 alias ev 'vim ~/.vimrc'
 alias evi 'vim ~/.config/nvim/init.vim'
+alias rfish 'source ~/.config/fish/config.fish'
+alias rtmux 'tmux source-file ~/.tmux.conf'
 
 # Shortcuts
 alias dt "cd ~/Desktop"
 alias d "cd ~/dev"
+alias dot "cd ~/dev/personal/dotfiles"
 alias p "cd ~/dev/paradem"
 alias c "cd ~/dev/paradem/carmine"
 
