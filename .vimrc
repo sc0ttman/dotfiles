@@ -5,9 +5,9 @@ packadd minpac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call minpac#init()
 call minpac#add('itchyny/lightline.vim')
-"call minpac#add('altercation/vim-colors-solarized')
+" call minpac#add('altercation/vim-colors-solarized')
 " call minpac#add('joshdick/onedark.vim')
-"call minpac#add('rakr/vim-one')
+" call minpac#add('rakr/vim-one')
 call minpac#add('mhartington/oceanic-next')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
@@ -29,6 +29,8 @@ call minpac#add('airblade/vim-gitgutter')
 call minpac#add('janko-m/vim-test')
 call minpac#add('jgdavey/tslime.vim')
 call minpac#add('godlygeek/tabular')
+call minpac#add('elixir-lang/vim-elixir')
+call minpac#add('christoomey/vim-tmux-navigator')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -41,7 +43,7 @@ filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
 if !(has("nvim"))
-  packadd matchit " Enable built-in plugin for extended % matching
+  packadd matchit     " Enable built-in plugin for extended % matching
   runtime macros/matchit.vim
 endif
 
@@ -50,13 +52,12 @@ set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
 set encoding=utf-8 nobomb " BOM often causes trouble
-" set nolist " performance - don't render special chars (tabs, trails, ...)
+" set nolist              " performance - don't render special chars (tabs, trails, ...)
 set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·
 ",tab:▸␣ •¶
-set number " Show line numbers
+set number         " Show line numbers
 set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
-set numberwidth=3 " Width of "gutter" column used for numbering
-"highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+set numberwidth=3  " Width of gutter column used for numbering
 
 " Speed
 set lazyredraw
@@ -65,62 +66,57 @@ if !has('nvim')
   set ttyscroll=3
 endif
 
-set autoindent " Copy indent from last line when starting new line
+set autoindent                     " Copy indent from last line when starting new line
 set backspace=indent,eol,start
 set clipboard=unnamed
+set cursorline                     " Highlight current line - PERFORMANCE LOSS
 "set formatoptions-=cro
-set autoread " If a file is changed outside of vim, automatically reload it without asking
-set diffopt=filler " Add vertical spaces to keep right and left aligned
-set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
-set expandtab " Expand tabs to spaces
-set shiftwidth=2 " The # of spaces for indenting
-set softtabstop=2 " Tab key results in 2 spaces
-set hlsearch " Highlight searches
-set incsearch " Highlight dynamically as pattern is typed
-set ignorecase " Ignore case of searches
-set smartcase " Ignore 'ignorecase' if search patter contains uppercase characters
-set smarttab  " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces
-set cursorline " Highlight current line - PERFORMANCE LOSS
-set laststatus=2 " Always show status line
-"set esckeys " Allow cursor keys in insert mode
-" Folding is slow and sorta broken
-" set foldlevel=0 " Performance
-" set foldmethod=manual
-" set nofoldenable " Disable folds by default. 'zc' will enable
-set foldcolumn=0 " Column to show folds
-set foldenable " Enable folding
-set foldlevel=99 " Open all folds by default
-set foldmethod=syntax " Syntax are used to specify folds
-set foldminlines=0 " Allow folding single lines
-set foldnestmax=5 " Set max fold nesting level
-set history=1000 " Increase history from 20 default to 1000
-set hidden " Allow hiding buffers with unsaved changes
-set noerrorbells " Disable error bells
-set ofu=syntaxcomplete#Complete " Set omni-completion method
-set report=0 " Show all changes
-set ruler " Show the cursor position
-set scrolloff=3 " Start scrolling three lines before horizontal border of window
-set sidescrolloff=3 " Start scrolling three columns before vertical border of window
-"set showtabline=2 " Always show tab bar
-set showmatch "Briefly jump to a paren once it's balanced
-set matchtime=2 " (for only .2 seconds).
-set splitbelow " New window goes below
-set splitright " New windows goes right
-set title " Show the filename in the window titlebar
-set undofile " Persistent Undo
-set visualbell " Use visual bell instead of audible bell (annnnnoying)
-set wildchar=<TAB> " Character for CLI expansion (TAB-completion)
+set autoread                       " If a file is changed outside of vim, automatically reload it without asking
+set diffopt=filler                 " Add vertical spaces to keep right and left aligned
+set diffopt+=iwhite                " Ignore whitespace changes (focus on code changes)
+set expandtab                      " Expand tabs to spaces
+set foldcolumn=0                   " Column to show folds
+set foldenable                     " Enable folding
+set foldlevel=99                   " Open all folds by default
+set foldmethod=syntax              " Syntax are used to specify folds
+set foldminlines=0                 " Allow folding single lines
+set foldnestmax=5                  " Set max fold nesting level
+set guicursor=                     " dont change cursor in insert mode in nvim
+set linebreak                      " ...but when I do, I wrap whole words
+set history=1000                   " Increase history from 20 default to 1000
+set hidden                         " Allow hiding buffers with unsaved changes
+set hlsearch                       " Highlight searches
+set incsearch                      " Highlight dynamically as pattern is typed
+set ignorecase                     " Ignore case of searches
+set laststatus=2                   " Always show status line
+set matchtime=2                    " (for only .2 seconds).
+set noerrorbells                   " Disable error bells
+set ofu=syntaxcomplete#Complete    " Set omni-completion method
+set report=0                       " Show all changes
+set ruler                          " Show the cursor position
+set scrolloff=3                    " Start scrolling three lines before horizontal border of window
+set smartcase                      " Ignore 'ignorecase' if search patter contains uppercase characters
+set smarttab                       " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces
+set shiftwidth=2                   " The # of spaces for indenting
+set softtabstop=2                  " Tab key results in 2 spaces
+set sidescrolloff=3                " Start scrolling three columns before vertical border of window
+"set showtabline=2                 " Always show tab bar
+set showmatch                      " Briefly jump to a paren once it's balanced
+set splitbelow                     " New window goes below
+set splitright                     " New windows goes right
+set title                          " Show the filename in the window titlebar
+set undofile                       " Persistent Undo
+set visualbell                     " Use visual bell instead of audible bell (annnnnoying)
+set wildchar=<TAB>                 " Character for CLI expansion (TAB-completion)
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
 set wildignore+=*/bower_components/*,*/node_modules/*
 set wildignore+=*/smarty/*,*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/ckeditor/*,*/doc/*,*/source_maps/*,*/dist/*
-set wildmenu " Hitting TAB in command mode will show possible completions above command line
+set wildmenu              " Hitting TAB in command mode will show possible completions above command line
 set wildmode=list:longest " Complete only until point of ambiguity
-set winminheight=0 " Allow splits to be reduced to a single line
-set wrapscan " Searches wrap around end of file
-set nowrap " I don't always wrap lines...
-set linebreak " ...but when I do, I wrap whole words
-set guicursor= " dont change cursor in insert mode in nvim
+set winminheight=0        " Allow splits to be reduced to a single line
+set wrapscan              " Searches wrap around end of file
+set nowrap                " I don't always wrap lines...
 " Strip whitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
@@ -132,6 +128,7 @@ if has('nvim')
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
   set inccommand=nosplit " show results while typing a :substitute command
 endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom key mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -153,12 +150,13 @@ nnoremap gn :bn<CR> " Move to the next buffer with "gn"
 nnoremap gl :ls<CR> " List all possible buffers with "gl"
 nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffer argument [1]
 
-map <C-a> <esc>ggVG<CR> " Select all
+" map <C-a> <esc>ggVG<CR> " Select all
 
 " invisibles
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=white guibg=#cc0000
 nmap <leader>l :set list!<CR> " Shortcut to rapidly toggle `set list`
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
