@@ -132,6 +132,8 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom key mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader = ','
+
 " Enable this if you mistype :w as :W or :q as :Q.
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
@@ -151,6 +153,7 @@ nnoremap gl :ls<CR> " List all possible buffers with "gl"
 nnoremap gb :ls<CR> " List all possible buffers with "gb" and accept a new buffer argument [1]
 
 " map <C-a> <esc>ggVG<CR> " Select all
+nmap <leader>c :nohl<CR>      " Clear search highlights
 
 " invisibles
 highlight NonText guifg=#4a4a59
@@ -204,29 +207,24 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fuzzy finding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" https://github.com/junegunn/fzf/wiki/Examples-(vim)
+
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
 nnoremap <leader>f :FZF <cr>
 nnoremap <leader>s :Ag <cr>
-"nnoremap <leader>s :call KAg()<cr>
+nnoremap <leader>b :Buffers <cr>
+" nnoremap <leader>s :call KAg()<cr>
 " nnoremap <leader><plug>(fzf-complete-file-ag)
 
 function! KAg()
-  call fzf#vim#ag('', {'bottom': '25%'})
+  call fzf#run({'sink': 'e', 'bottom': '25%'})
 endfunction
 
-" https://robots.thoughtbot.com/faster-grepping-in-vim
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
+function! Buffers()
+  call fzf#run({'source': map(range(1, bufnr('$')), 'bufname(v:val)'),
+            \ 'sink': 'e', 'down': '30%'})
+endfunction
 
 " bind '\ag' to search for word under cursor
 nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
@@ -284,6 +282,7 @@ let g:ale_lint_delay=1000
 " NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <C-n> :NERDTreeToggle<CR>
+
 " open a NERDTree automatically when vim starts up if no files were specified?
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
