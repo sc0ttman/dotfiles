@@ -19,6 +19,18 @@ source ~/.fish_aliases
 source ~/.fish_variables
 ```
 
+#### Bob the fish theme for Fish shell
+
+Install [Oh my fish](https://github.com/oh-my-fish/oh-my-fish)
+```
+curl -L https://get.oh-my.fish | fish
+```
+
+Install [Bob the fish](https://github.com/oh-my-fish/theme-bobthefish)
+```
+omf install bobthefish
+```
+
 ## TMux
 `brew install tmux`
 

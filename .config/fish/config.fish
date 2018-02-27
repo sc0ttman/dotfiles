@@ -8,3 +8,7 @@ status --is-interactive; and source (rbenv init -|psub)
 # Local prompt customization
 # :wq
 set -e fish_greeting
+
+# https://github.com/oh-my-fish/theme-bobthefish
+set -g theme_color_scheme solarized-dark
+set -g theme_newline_cursor yes

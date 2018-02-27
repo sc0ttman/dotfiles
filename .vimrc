@@ -11,6 +11,7 @@ call minpac#add('itchyny/lightline.vim')
 call minpac#add('mhartington/oceanic-next')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
+call minpac#add('junegunn/vim-peekaboo')
 call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
 call minpac#add('ntpeters/vim-better-whitespace')
@@ -31,6 +32,8 @@ call minpac#add('jgdavey/tslime.vim')
 call minpac#add('godlygeek/tabular')
 call minpac#add('elixir-lang/vim-elixir')
 call minpac#add('christoomey/vim-tmux-navigator')
+call minpac#add('elmcast/elm-vim')
+call minpac#add('mxw/vim-jsx')
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -211,6 +214,27 @@ endif
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
+" let g:fzf_layout = { 'window': 'enew' }
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+" # Solarized Dark color scheme for fzf
+" export FZF_DEFAULT_OPTS="
+"   --color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:$base02,hl+:$blue
+"   --color info:$yellow,prompt:$yellow,Vpointer:$base3,marker:$base3,spinner:$yellow
+
 nnoremap <leader>f :FZF <cr>
 nnoremap <leader>s :Ag <cr>
 nnoremap <leader>b :Buffers <cr>
@@ -340,6 +364,22 @@ vnoremap <Space> zf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_access_modifier_style = 'normal'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Elm config (elm-vim)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:elm_format_autosave = 1
+let g:elm_setup_keybindings = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Emmet config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  },
+\}
+imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline config
