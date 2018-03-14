@@ -47,6 +47,7 @@
   cob = checkout -b
   br = branch -av # Show all branches
   aa = add --all
+  ap = add -p # patch - Interactively choose hunks of patch between the index and the work tree
   up = pull
   pl = pull
   p = push

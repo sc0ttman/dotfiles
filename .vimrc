@@ -4,6 +4,7 @@ packadd minpac
 " Minpac plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call minpac#init()
+call minpac#add('k-takata/minpac', {'type':'opt'})
 call minpac#add('itchyny/lightline.vim')
 " call minpac#add('altercation/vim-colors-solarized')
 " call minpac#add('joshdick/onedark.vim')
@@ -14,26 +15,28 @@ call minpac#add('junegunn/fzf.vim')
 call minpac#add('junegunn/vim-peekaboo')
 call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
+call minpac#add('tpope/vim-rails')
 call minpac#add('ntpeters/vim-better-whitespace')
 call minpac#add('pangloss/vim-javascript')
+call minpac#add('elmcast/elm-vim')
+call minpac#add('elixir-lang/vim-elixir')
+call minpac#add('mxw/vim-jsx')
+call minpac#add('mattn/emmet-vim')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-endwise')
-call minpac#add('tpope/vim-rails')
 call minpac#add('w0rp/ale')
 call minpac#add('scrooloose/nerdtree')
 call minpac#add('Xuyuanp/nerdtree-git-plugin')
-call minpac#add('mattn/emmet-vim')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('janko-m/vim-test')
-call minpac#add('jgdavey/tslime.vim')
-call minpac#add('godlygeek/tabular')
-call minpac#add('elixir-lang/vim-elixir')
+call minpac#add('jgdavey/tslime.vim') " Allows vim to access tmux sessions
+" call minpac#add('godlygeek/tabular')
 call minpac#add('christoomey/vim-tmux-navigator')
-call minpac#add('elmcast/elm-vim')
-call minpac#add('mxw/vim-jsx')
+call minpac#add('jiangmiao/auto-pairs')
+call minpac#add('wincent/terminus') " Change cursor on INSERT
 
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -55,12 +58,13 @@ set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
 set encoding=utf-8 nobomb " BOM often causes trouble
-" set nolist              " performance - don't render special chars (tabs, trails, ...)
+set nolist              " performance - don't render special chars (tabs, trails, ...)
 set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·
 ",tab:▸␣ •¶
 set number         " Show line numbers
 set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
 set numberwidth=3  " Width of gutter column used for numbering
+" set colorcolumn=80
 
 " Speed
 set lazyredraw
@@ -84,8 +88,9 @@ set foldlevel=99                   " Open all folds by default
 set foldmethod=syntax              " Syntax are used to specify folds
 set foldminlines=0                 " Allow folding single lines
 set foldnestmax=5                  " Set max fold nesting level
-set guicursor=                     " dont change cursor in insert mode in nvim
-set linebreak                      " ...but when I do, I wrap whole words
+" set guicursor=                     " dont change cursor in insert mode in nvim
+set wrap                           " Soft wrap
+set linebreak                      " Wrap at words
 set history=1000                   " Increase history from 20 default to 1000
 set hidden                         " Allow hiding buffers with unsaved changes
 set hlsearch                       " Highlight searches
@@ -119,7 +124,6 @@ set wildmenu              " Hitting TAB in command mode will show possible compl
 set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0        " Allow splits to be reduced to a single line
 set wrapscan              " Searches wrap around end of file
-set nowrap                " I don't always wrap lines...
 " Strip whitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
@@ -162,6 +166,13 @@ nmap <leader>c :nohl<CR>      " Clear search highlights
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=white guibg=#cc0000
 nmap <leader>l :set list!<CR> " Shortcut to rapidly toggle `set list`
+
+" Quick save
+noremap <Leader>w :update<CR>
+
+" Replace word under cursor /global confirm
+" nnoremap <Leader>r :%s/\<<C-r><C-w>\>/
+nnoremap <Leader>r :%s/\<<C-r><C-w>\>//gc<Left><Left>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
@@ -293,10 +304,21 @@ endif
 " ALE configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " \   'javascript': ['prettier'],
+
 let g:ale_fixers = {
       \ 'ruby': ['rubocop'],
+      \ 'javascript': ['eslint']
       \}
 
+let g:ale_linters = {
+      \  'javascript': ['eslint', 'flow']
+      \}
+
+let g:ale_sign_error = '●' " Less aggressive than the default '>>'
+let g:ale_sign_warning = '.'
+let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+let g:jsx_ext_required = 0
+let g:ale_linter_aliases = {'javascript.jsx': 'javascript', 'jsx': 'javascript'}
 let g:ale_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
@@ -364,6 +386,13 @@ vnoremap <Space> zf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_access_modifier_style = 'normal'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Javascript config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jsx_ext_required = 0 " JSX can be in .js files
+let g:javascript_plugin_flow = 1
+hi def link jsObjectKey Label  " Highlight object keys
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elm config (elm-vim)

@@ -88,3 +88,6 @@ Get italics working
 ## Silver Searcher
 In order for :Ag to run you need to:
 `brew install the_silver_searcher`
+
+## Make CAPSLOCK useful
+[Install Karabiner](https://pqrs.org/osx/karabiner/) and use config file in `.config/`
