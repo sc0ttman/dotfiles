@@ -38,6 +38,7 @@ call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('jiangmiao/auto-pairs')
 call minpac#add('wincent/terminus') " Change cursor on INSERT
 
+call minpac#add('ryanoasis/vim-devicons') " MUST load after NERDTREE and other NERD-enabled plugins
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
 
@@ -57,7 +58,7 @@ set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 set undodir=~/.vim/undo
 
-set encoding=utf-8 nobomb " BOM often causes trouble
+set encoding=UTF-8 " BOM often causes trouble
 set nolist              " performance - don't render special chars (tabs, trails, ...)
 set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·
 ",tab:▸␣ •¶
@@ -174,6 +175,15 @@ noremap <Leader>w :update<CR>
 " nnoremap <Leader>r :%s/\<<C-r><C-w>\>/
 nnoremap <Leader>r :%s/\<<C-r><C-w>\>//gc<Left><Left>
 
+" tnoremap <Esc> <C-\><C-n>
+" Use Esc to exit out of terminal insert without breaking FZF esc
+" https://github.com/junegunn/fzf/issues/576
+if has('nvim')
+  autocmd BufEnter term://* startinsert
+  noremap <Leader>t :terminal<CR>
+  tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -214,7 +224,7 @@ endfunction
 if has("gui_running")
    let s:uname = system("uname")
    if s:uname == "Darwin\n"
-      set guifont=Meslo\ LG\ S\ for\ Powerline
+     set guifont=SauceCodePro_Nerd_Font_Mono:h16
    endif
 endif
 
@@ -225,6 +235,7 @@ endif
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_files_options = '--preview "rougify {} --theme monokai | head -'.&lines.'"' " Preview with Rouge gem
 " let g:fzf_layout = { 'window': 'enew' }
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -246,15 +257,28 @@ let g:fzf_colors =
 "   --color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:$base02,hl+:$blue
 "   --color info:$yellow,prompt:$yellow,Vpointer:$base3,marker:$base3,spinner:$yellow
 
-nnoremap <leader>f :FZF <cr>
-nnoremap <leader>s :Ag <cr>
-nnoremap <leader>b :Buffers <cr>
+" https://github.com/dkarter/dotfiles/blob/master/vimrc
+function! FZFOpen(command_str)
+  if (expand('%') =~# 'NERD_tree' && winnr('$') > 1)
+    exe "normal! \<c-w>\<c-w>"
+  endif
+  exe 'normal! ' . a:command_str . "\<cr>"
+endfunction
+
+
+nnoremap <leader>F :call FZFOpen(':call Fzf_dev()')<CR>
+" nnoremap <leader>f :FZF <cr>
+nnoremap <leader>f :call FZFOpen(':Files')<CR>
+nnoremap <leader>s :call FZFOpen(':Ag')<cr>
+nnoremap <leader>b :call FZFOpen(':Buffers')<CR>
+nnoremap <leader>m :call FZFOpen(':Commands')<CR>
+nnoremap <leader>i :call FZFOpen(':BLines')<CR>
 " nnoremap <leader>s :call KAg()<cr>
 " nnoremap <leader><plug>(fzf-complete-file-ag)
 
-function! KAg()
-  call fzf#run({'sink': 'e', 'bottom': '25%'})
-endfunction
+" function! KAg()
+"   call fzf#run({'sink': 'e', 'bottom': '25%'})
+" endfunction
 
 function! Buffers()
   call fzf#run({'source': map(range(1, bufnr('$')), 'bufname(v:val)'),
@@ -265,9 +289,9 @@ endfunction
 nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
 
 " Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+" nmap <leader><tab> <plug>(fzf-maps-n)
+" xmap <leader><tab> <plug>(fzf-maps-x)
+" omap <leader><tab> <plug>(fzf-maps-o)
 
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
@@ -287,7 +311,47 @@ command! FZFTagFile if !empty(tagfiles()) | call fzf#run({
 \ }) | else | echo 'No tags' | endif
 nnoremap <silent> <Leader>v :FZFTagFile<cr>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF + DevIcons https://github.com/dkarter/dotfiles/blob/master/vimrc
+function! Fzf_dev()
+ let l:fzf_files_options =
+       \ '--preview "echo {} | tr -s \" \" \"\n\" | tail -1 | xargs rougify -t monokai | head -'.&lines.'"'
+ function! s:files()
+   let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+   return s:prepend_icon(l:files)
+ endfunction
+
+ function! s:prepend_icon(candidates)
+   let l:result = []
+   for l:candidate in a:candidates
+     let l:filename = fnamemodify(l:candidate, ':p:t')
+     let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+     call add(l:result, printf('%s %s', l:icon, l:candidate))
+   endfor
+
+   return l:result
+ endfunction
+
+ function! s:edit_file(item)
+   let l:parts = split(a:item, ' ')
+   let l:file_path = get(l:parts, 1, '')
+   " TODO: not working
+   let l:cmd = get({
+              \ 'ctrl-x': 'split',
+              \ 'ctrl-v': 'vertical split',
+              \ 'ctrl-t': 'tabe'
+              \ }, a:item[0], 'e')
+   execute 'silent ' . l:cmd . ' ' . l:file_path
+ endfunction
+
+ call fzf#run({
+       \ 'source': <sid>files(),
+       \ 'sink':   function('s:edit_file'),
+       \ 'options': '-m --expect=ctrl-t,ctrl-v,ctrl-x '.
+       \            l:fzf_files_options,
+       \ 'down':    '40%' })
+endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " minpac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command! PackUpdate call minpac#update()
@@ -358,7 +422,8 @@ nmap [h <Plug>GitGutterPrevHunk
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim test
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let test#strategy = "tslime" " Use Send_to_Tmux() method in tslime.vim for tests
+" let test#strategy = "tslime" " Use Send_to_Tmux() method in tslime.vim for tests
+" let test#strategy = "neovim" " Runs test commands with :terminal in a split window.
 nnoremap <leader>tn :TestNearest<CR>
 nnoremap <leader>tf :TestFile<CR>
 nnoremap <leader>ts :TestSuite<CR>
@@ -415,3 +480,27 @@ imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_powerline_fonts = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim-Devicons
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:NERDTreeGitStatusNodeColorization = 1
+" 
+let g:webdevicons_enable_denite = 0
+" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vim'] = ''
+let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = ''
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['tsx'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
+

@@ -85,6 +85,11 @@ Get italics working
 - https://apple.stackexchange.com/a/267261
 - https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
 
+Syntax highlighting in FZF preview windows:
+```
+$ gem install rouge
+```
+
 ## Silver Searcher
 In order for :Ag to run you need to:
 `brew install the_silver_searcher`
