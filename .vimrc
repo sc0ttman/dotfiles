@@ -13,6 +13,7 @@ call minpac#add('mhartington/oceanic-next')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('junegunn/vim-peekaboo')
+call minpac#add('junegunn/gv.vim') " Git file history :GV
 call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
 call minpac#add('tpope/vim-rails')
@@ -29,6 +30,7 @@ call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('w0rp/ale')
 call minpac#add('scrooloose/nerdtree')
+" call minpac#add('terryma/vim-multiple-cursors') " seems to cause errors
 call minpac#add('Xuyuanp/nerdtree-git-plugin')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('janko-m/vim-test')
@@ -37,7 +39,7 @@ call minpac#add('jgdavey/tslime.vim') " Allows vim to access tmux sessions
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('jiangmiao/auto-pairs')
 call minpac#add('wincent/terminus') " Change cursor on INSERT
-
+call minpac#add('machakann/vim-highlightedyank') " highlight yank
 call minpac#add('ryanoasis/vim-devicons') " MUST load after NERDTREE and other NERD-enabled plugins
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
 " call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
@@ -182,6 +184,7 @@ if has('nvim')
   autocmd BufEnter term://* startinsert
   noremap <Leader>t :terminal<CR>
   tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+  " tnoremap <Esc> <C-\><C-n>
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -371,7 +374,8 @@ endif
 
 let g:ale_fixers = {
       \ 'ruby': ['rubocop'],
-      \ 'javascript': ['eslint']
+      \ 'javascript': ['eslint'],
+      \ 'scss': ['stylelint', 'prettier']
       \}
 
 let g:ale_linters = {
@@ -473,7 +477,7 @@ let g:user_emmet_settings = {
 \      'extends' : 'jsx',
 \  },
 \}
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+" imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline config
