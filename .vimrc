@@ -6,23 +6,27 @@ packadd minpac
 call minpac#init()
 call minpac#add('k-takata/minpac', {'type':'opt'})
 call minpac#add('itchyny/lightline.vim')
+call minpac#add('mgee/lightline-bufferline')
+call minpac#add('maximbaz/lightline-ale')
+call minpac#add('gcavallanti/vim-noscrollbar')
 " call minpac#add('altercation/vim-colors-solarized')
-" call minpac#add('joshdick/onedark.vim')
+call minpac#add('joshdick/onedark.vim') " Theme
+call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " Theme
 " call minpac#add('rakr/vim-one')
 call minpac#add('mhartington/oceanic-next')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
-call minpac#add('junegunn/vim-peekaboo')
+call minpac#add('junegunn/vim-peekaboo') " hit \" or @ in normal mode or <CTRL-R> in insert
 call minpac#add('junegunn/gv.vim') " Git file history :GV
 call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
-call minpac#add('tpope/vim-rails')
 call minpac#add('ntpeters/vim-better-whitespace')
 call minpac#add('pangloss/vim-javascript')
 call minpac#add('elmcast/elm-vim')
 call minpac#add('elixir-lang/vim-elixir')
 call minpac#add('mxw/vim-jsx')
 call minpac#add('mattn/emmet-vim')
+call minpac#add('tpope/vim-rails')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
@@ -30,6 +34,7 @@ call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('w0rp/ale')
 call minpac#add('scrooloose/nerdtree')
+call minpac#add('cskeeters/vim-smooth-scroll')
 " call minpac#add('terryma/vim-multiple-cursors') " seems to cause errors
 call minpac#add('Xuyuanp/nerdtree-git-plugin')
 call minpac#add('airblade/vim-gitgutter')
@@ -187,7 +192,10 @@ if has('nvim')
   " tnoremap <Esc> <C-\><C-n>
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" Better redo
+nnoremap U <C-R>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if (has("termguicolors"))
@@ -195,34 +203,34 @@ if (has("termguicolors"))
 endif
 
 syntax enable " Syntax Highlighting - PERFORMANCE LOSS
-" set background=dark
+set background=dark
 " set t_ut=
-" let g:onedark_terminal_italics=1
+let g:onedark_terminal_italics=1
 " colorscheme onedark
 
 let g:oceanic_next_terminal_bold = 1
 let g:oceanic_next_terminal_italic = 1
-colorscheme OceanicNext
+" colorscheme OceanicNext
+" colorscheme onedark
+" packadd! gruvbox
+let g:gruvbox_italic=1
+let g:gruvbox_italicize_comments = 1
+colorscheme gruvbox
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-      \ 'colorscheme': 'oceanicnext',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'filename': 'LightlineFilename'
-      \ },
-      \ }
-
-" Show path to file not just filename
-function! LightlineFilename()
-  return expand('%')
-endfunction
+" let g:lightline = {
+"       \ 'colorscheme': 'oceanicnext',
+"       \ 'active': {
+"       \   'left': [ [ 'mode', 'paste' ],
+"       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+"       \ },
+"       \ 'component_function': {
+"       \   'gitbranch': 'fugitive#head',
+"       \   'filename': 'LightlineFilename'
+"       \ },
+"       \ }
 
 if has("gui_running")
    let s:uname = system("uname")
@@ -230,6 +238,118 @@ if has("gui_running")
      set guifont=SauceCodePro_Nerd_Font_Mono:h16
    endif
 endif
+
+" Modified from https://github.com/maximbaz/dotfiles/blob/master/.config/nvim/init.vim
+let g:lightline = {
+      \   'colorscheme': 'gruvbox',
+      \   'active': {
+      \     'left': [ [ 'mode', 'paste' ],
+      \               [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \     'right': [ [ 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings', 'lineinfo' ], [ 'fileinfo' ], [ 'scrollbar' ] ],
+      \   },
+      \   'inactive': {
+      \     'left': [ [ 'pwd' ] ],
+      \     'right': [ [ 'lineinfo' ], [ 'fileinfo' ], [ 'scrollbar' ] ],
+      \   },
+      \   'tabline': {
+      \     'left': [ [ 'buffers' ] ],
+      \     'right': [ [ 'close' ] ],
+      \   },
+      \   'separator': { 'left': '', 'right': '' },
+      \   'subseparator': { 'left': '', 'right': '' },
+      \   'mode_map': {
+      \     'n' : 'N',
+      \     'i' : 'I',
+      \     'R' : 'R',
+      \     'v' : 'V',
+      \     'V' : 'V-LINE',
+      \     "\<C-v>": 'V-BLOCK',
+      \     'c' : 'C',
+      \     's' : 'S',
+      \     'S' : 'S-LINE',
+      \     "\<C-s>": 'S-BLOCK',
+      \     't': '󰀣 ',
+      \   },
+      \   'component': {
+      \     'lineinfo': '%l:%-v',
+      \   },
+      \   'component_expand': {
+      \     'buffers': 'lightline#bufferline#buffers',
+      \     'linter_ok': 'lightline#ale#ok',
+      \     'linter_checking': 'lightline#ale#checking',
+      \     'linter_warnings': 'lightline#ale#warnings',
+      \     'linter_errors': 'lightline#ale#errors',
+      \   },
+      \   'component_function': {
+      \     'pwd': 'LightlineWorkingDirectory',
+      \     'gitbranch': 'fugitive#head',
+      \     'scrollbar': 'LightlineScrollbar',
+      \     'fileinfo': 'LightlineFileinfo',
+      \     'filename': 'LightlineFilename'
+      \   },
+      \   'component_type': {
+      \     'buffers': 'tabsel',
+      \     'linter_ok': 'left',
+      \     'linter_checking': 'left',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \   },
+      \ }
+
+""""" Custom components
+"
+" " Show path to file not just filename
+function! LightlineFilename()
+  return expand('%')
+endfunction
+
+function! LightlineScrollbar()
+  let top_line = str2nr(line('w0'))
+  let bottom_line = str2nr(line('w$'))
+  let lines_count = str2nr(line('$'))
+
+  if bottom_line - top_line + 1 >= lines_count
+    return ''
+  endif
+
+  let window_width = winwidth(0)
+  if window_width < 90
+    let scrollbar_width = 6
+  elseif window_width < 120
+    let scrollbar_width = 9
+  else
+    let scrollbar_width = 12
+  endif
+
+  return noscrollbar#statusline(scrollbar_width, '-', '#')
+endfunction
+
+function! LightlineFileinfo()
+  if winwidth(0) < 90
+    return ''
+  endif
+
+  let encoding = &fenc !=# "" ? &fenc : &enc
+  let format = &ff
+  let type = &ft !=# "" ? &ft : "no ft"
+  return type . ' | ' . format . ' | ' . encoding
+endfunction
+
+function! LightlineWorkingDirectory()
+  return &ft =~ 'help\|qf' ? '' : fnamemodify(getcwd(), ":~:.")
+endfunction
+
+"""" Lightline ALE
+let g:lightline#ale#indicator_warnings = ' '
+let g:lightline#ale#indicator_errors = ' '
+let g:lightline#ale#indicator_checking = ' '
+
+"""" lightline-bufferline
+let g:lightline#bufferline#filename_modifier = ':~:.' " Show filename relative to current directory
+let g:lightline#bufferline#unicode_symbols = 1        " Use fancy unicode symbols for various indicators
+let g:lightline#bufferline#modified = ''             " Default pencil is too ugly
+let g:lightline#bufferline#unnamed = '[No Name]'      " Default name when no buffer is opened
+let g:lightline#bufferline#shorten_path = 0           " Don't compress ~/my/folder/name to ~/m/f/n
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fuzzy finding
@@ -507,4 +627,9 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-smooth-scroll
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ms_per_line=2
 
