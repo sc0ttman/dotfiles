@@ -7,7 +7,6 @@ call minpac#init()
 call minpac#add('k-takata/minpac', {'type':'opt'})
 call minpac#add('itchyny/lightline.vim')
 call minpac#add('mgee/lightline-bufferline')
-call minpac#add('maximbaz/lightline-ale')
 call minpac#add('gcavallanti/vim-noscrollbar')
 " call minpac#add('altercation/vim-colors-solarized')
 call minpac#add('joshdick/onedark.vim') " Theme
@@ -20,19 +19,23 @@ call minpac#add('junegunn/vim-peekaboo') " hit \" or @ in normal mode or <CTRL-R
 call minpac#add('junegunn/gv.vim') " Git file history :GV
 call minpac#add('mileszs/ack.vim')
 call minpac#add('vim-ruby/vim-ruby')
-call minpac#add('ntpeters/vim-better-whitespace')
+call minpac#add('kana/vim-textobj-user')  " dependency for rubyblock
+call minpac#add('nelstrom/vim-textobj-rubyblock') " adds ar and ir (all and inner)
+" call minpac#add('ntpeters/vim-better-whitespace')
 call minpac#add('pangloss/vim-javascript')
 call minpac#add('elmcast/elm-vim')
 call minpac#add('elixir-lang/vim-elixir')
-call minpac#add('mxw/vim-jsx')
-call minpac#add('mattn/emmet-vim')
+" call minpac#add('mxw/vim-jsx')
+" call minpac#add('mattn/emmet-vim')
 call minpac#add('tpope/vim-rails')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
-call minpac#add('tpope/vim-unimpaired')
-call minpac#add('tpope/vim-endwise')
+" call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-endwise') " Autocompletes method definitions
+" call minpac#add('prettier/vim-prettier')
 call minpac#add('w0rp/ale')
+call minpac#add('maximbaz/lightline-ale')
 call minpac#add('scrooloose/nerdtree')
 call minpac#add('cskeeters/vim-smooth-scroll')
 " call minpac#add('terryma/vim-multiple-cursors') " seems to cause errors
@@ -42,8 +45,8 @@ call minpac#add('janko-m/vim-test')
 call minpac#add('jgdavey/tslime.vim') " Allows vim to access tmux sessions
 " call minpac#add('godlygeek/tabular')
 call minpac#add('christoomey/vim-tmux-navigator')
-call minpac#add('jiangmiao/auto-pairs')
-call minpac#add('wincent/terminus') " Change cursor on INSERT
+call minpac#add('kassio/neoterm')
+" call minpac#add('jiangmiao/auto-pairs')
 call minpac#add('machakann/vim-highlightedyank') " highlight yank
 call minpac#add('ryanoasis/vim-devicons') " MUST load after NERDTREE and other NERD-enabled plugins
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
@@ -52,7 +55,7 @@ call minpac#add('ryanoasis/vim-devicons') " MUST load after NERDTREE and other N
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible
+set nocompatible      " Do not care about Vi compatibility
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins. Needed for matchit
@@ -67,7 +70,8 @@ set undodir=~/.vim/undo
 
 set encoding=UTF-8 " BOM often causes trouble
 set nolist              " performance - don't render special chars (tabs, trails, ...)
-set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·
+set list
+set listchars=nbsp:☠,eol:¬,tab:▸␣,extends:»,precedes:«,trail:·,space:·
 ",tab:▸␣ •¶
 set number         " Show line numbers
 set relativenumber " Turn both on for Hybrid mode - PERFORMANCE LOSS
@@ -75,8 +79,8 @@ set numberwidth=3  " Width of gutter column used for numbering
 " set colorcolumn=80
 
 " Speed
-set lazyredraw
-set ttyfast
+" set lazyredraw
+" set ttyfast
 if !has('nvim')
   set ttyscroll=3
 endif
@@ -85,7 +89,6 @@ set autoindent                     " Copy indent from last line when starting ne
 set backspace=indent,eol,start
 set clipboard=unnamed
 set cursorline                     " Highlight current line - PERFORMANCE LOSS
-"set formatoptions-=cro
 set autoread                       " If a file is changed outside of vim, automatically reload it without asking
 set diffopt=filler                 " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite                " Ignore whitespace changes (focus on code changes)
@@ -96,9 +99,11 @@ set foldlevel=99                   " Open all folds by default
 set foldmethod=syntax              " Syntax are used to specify folds
 set foldminlines=0                 " Allow folding single lines
 set foldnestmax=5                  " Set max fold nesting level
+set nowrap                         " do not automatically wrap on load
+set formatoptions-=t               " do not automatically wrap text when typing
 " set guicursor=                     " dont change cursor in insert mode in nvim
-set wrap                           " Soft wrap
-set linebreak                      " Wrap at words
+" set wrap                           " Soft wrap
+" set linebreak                      " Wrap at words
 set history=1000                   " Increase history from 20 default to 1000
 set hidden                         " Allow hiding buffers with unsaved changes
 set hlsearch                       " Highlight searches
@@ -116,10 +121,12 @@ set smarttab                       " At start of line, <Tab> inserts shiftwidth 
 set shiftwidth=2                   " The # of spaces for indenting
 set softtabstop=2                  " Tab key results in 2 spaces
 set sidescrolloff=3                " Start scrolling three columns before vertical border of window
-"set showtabline=2                 " Always show tab bar
+" set showtabline=2                  " Always show tab bar
 set showmatch                      " Briefly jump to a paren once it's balanced
 set splitbelow                     " New window goes below
 set splitright                     " New windows goes right
+set tags^=./.git/tags              " Hide Fugitive warning
+set timeoutlen=1000 ttimeoutlen=0  " Slow down delay
 set title                          " Show the filename in the window titlebar
 set undofile                       " Persistent Undo
 set visualbell                     " Use visual bell instead of audible bell (annnnnoying)
@@ -133,7 +140,7 @@ set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0        " Allow splits to be reduced to a single line
 set wrapscan              " Searches wrap around end of file
 " Strip whitespace
-autocmd BufEnter * EnableStripWhitespaceOnSave
+" autocmd BufEnter * EnableStripWhitespaceOnSave
 
 if has('nvim')
   " Hack to get C-h working in NeoVim
@@ -185,15 +192,38 @@ nnoremap <Leader>r :%s/\<<C-r><C-w>\>//gc<Left><Left>
 " tnoremap <Esc> <C-\><C-n>
 " Use Esc to exit out of terminal insert without breaking FZF esc
 " https://github.com/junegunn/fzf/issues/576
-if has('nvim')
-  autocmd BufEnter term://* startinsert
-  noremap <Leader>t :terminal<CR>
-  tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
-  " tnoremap <Esc> <C-\><C-n>
-endif
+" if has('nvim')
+"   autocmd BufEnter term://* startinsert
+"   noremap <Leader>t :terminal<CR>
+"   tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+" endif
 
 """" Better redo
 nnoremap U <C-R>
+
+"""" Better pasting. Indents pasted text
+nnoremap <leader>p p`[v`]=
+
+" When wrap in enabled, this solves the problem that pressing down
+" jumps your cursor 'over' the current line to the next line
+nnoremap j gj
+nnoremap k gk
+
+" save a ton of keystrokes
+nnoremap ; :
+
+" Hard mode - doesnt work when we need arrows for FZF
+" map <up> <nop>
+" map <down> <nop>
+" map <left> <nop>
+" map <right> <nop>
+
+" Close all buffers and reopen current
+" nnoremap <leader>cab :w|%bd|e#
+:nnoremap <leader>cab :%bd<CR><C-O>:bd#<CR>
+
+" Turn on spell-checking in markdown and text.
+au BufRead,BufNewFile *.md,*.txt setlocal spell
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors
@@ -211,11 +241,11 @@ let g:onedark_terminal_italics=1
 let g:oceanic_next_terminal_bold = 1
 let g:oceanic_next_terminal_italic = 1
 " colorscheme OceanicNext
-" colorscheme onedark
+colorscheme onedark
 " packadd! gruvbox
 let g:gruvbox_italic=1
 let g:gruvbox_italicize_comments = 1
-colorscheme gruvbox
+" colorscheme gruvbox
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Lightline
@@ -241,7 +271,7 @@ endif
 
 " Modified from https://github.com/maximbaz/dotfiles/blob/master/.config/nvim/init.vim
 let g:lightline = {
-      \   'colorscheme': 'gruvbox',
+      \   'colorscheme': 'onedark',
       \   'active': {
       \     'left': [ [ 'mode', 'paste' ],
       \               [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
@@ -358,6 +388,7 @@ let g:lightline#bufferline#shorten_path = 0           " Don't compress ~/my/fold
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
+let $FZF_DEFAULT_OPTS .= ' --no-height'
 let g:fzf_files_options = '--preview "rougify {} --theme monokai | head -'.&lines.'"' " Preview with Rouge gem
 " let g:fzf_layout = { 'window': 'enew' }
 " Customize fzf colors to match your color scheme
@@ -487,26 +518,37 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neoterm
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:neoterm_autoinsert=1
+let g:neoterm_default_mod="botright"
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " \   'javascript': ['prettier'],
 
 let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'ruby': ['rubocop'],
-      \ 'javascript': ['eslint'],
+      \ 'javascript': ['prettier'],
+      \ 'javascript.jsx': ['prettier'],
+      \ 'jsx': ['prettier'],
+      \ 'vue': ['prettier'],
       \ 'scss': ['stylelint', 'prettier']
       \}
 
 let g:ale_linters = {
+      \  'ruby': ['rubocop'],
       \  'javascript': ['eslint', 'flow']
       \}
 
-let g:ale_sign_error = '●' " Less aggressive than the default '>>'
-let g:ale_sign_warning = '.'
-let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-let g:jsx_ext_required = 0
-let g:ale_linter_aliases = {'javascript.jsx': 'javascript', 'jsx': 'javascript'}
+let g:ale_sign_error = '✖' " Less aggressive than the default '>>'
+let g:ale_sign_warning = '⚠'
+" let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+" let g:jsx_ext_required = 1
+" let g:ale_linter_aliases = {'javascript.jsx': 'javascript', 'jsx': 'javascript'}
 let g:ale_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
@@ -516,7 +558,7 @@ let g:ale_lint_delay=1000
 " NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <C-n> :NERDTreeToggle<CR>
-
+let NERDTreeShowHidden=1
 " open a NERDTree automatically when vim starts up if no files were specified?
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -546,7 +588,7 @@ nmap [h <Plug>GitGutterPrevHunk
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim test
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let test#strategy = "tslime" " Use Send_to_Tmux() method in tslime.vim for tests
+let test#strategy = "tslime" " Use Send_to_Tmux() method in tslime.vim for tests
 " let test#strategy = "neovim" " Runs test commands with :terminal in a split window.
 nnoremap <leader>tn :TestNearest<CR>
 nnoremap <leader>tf :TestFile<CR>
@@ -579,7 +621,7 @@ let g:ruby_indent_access_modifier_style = 'normal'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Javascript config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jsx_ext_required = 0 " JSX can be in .js files
+" let g:jsx_ext_required = 0 " JSX can be in .js files
 let g:javascript_plugin_flow = 1
 hi def link jsObjectKey Label  " Highlight object keys
 
@@ -592,11 +634,11 @@ let g:elm_setup_keybindings = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Emmet config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:user_emmet_settings = {
-\  'javascript.jsx' : {
-\      'extends' : 'jsx',
-\  },
-\}
+" let g:user_emmet_settings = {
+" \  'javascript.jsx' : {
+" \      'extends' : 'jsx',
+" \  },
+" \}
 " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -632,4 +674,3 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
 " vim-smooth-scroll
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ms_per_line=2
-
