@@ -1,21 +1,22 @@
+# Load ~/.extra, ~/.bash_prompt, ~/.exports, ~/.aliases and ~/.functions
+# ~/.extra can be used for settings you don’t want to commit
 for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
   [ -r "$file" ] && source "$file"
 done
 unset file
 
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+# export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+# export CLICOLOR=1
+# export LSCOLORS=ExFxBxDxCxegedabagacad
+alias ls='ls -GFh'
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-export EDITOR="/Applications/Atom.app/Contents/MacOS/Atom -nw"
+if [ -f `brew --prefix`/etc/bash_completion ]; then
+  . `brew --prefix`/etc/bash_completion
+fi
 
-export ANDROID_HOME="$HOME/Library/Android/sdk/"
-export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home"
-export PATH="$HOME/.fastlane/bin:$PATH"
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
 
-# Git autocomplete
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
-
-# rbenv
 eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/local/opt/ncurses/bin:$PATH"

@@ -1,5 +1,11 @@
 # Scott's Dotfiles
 
+## Installation
+To symlink all the important files for the first time
+```
+source bootstrap.sh
+```
+
 ## Fish Shell
 
 Fish Shell Installation:
