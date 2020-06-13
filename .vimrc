@@ -8,8 +8,9 @@ call minpac#add('k-takata/minpac', {'type':'opt'})
 call minpac#add('itchyny/lightline.vim')
 call minpac#add('mgee/lightline-bufferline')
 call minpac#add('gcavallanti/vim-noscrollbar')
-" call minpac#add('altercation/vim-colors-solarized')
+" call minpac#add('altercation /vim-colors-solarized')
 call minpac#add('joshdick/onedark.vim') " Theme
+call minpac#add('https://github.com/ap/vim-css-color') " Display colors behind css hex codes
 call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " Theme
 " call minpac#add('rakr/vim-one')
 call minpac#add('mhartington/oceanic-next')
@@ -278,7 +279,7 @@ let g:lightline = {
       \     'right': [ [ 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings', 'lineinfo' ], [ 'fileinfo' ], [ 'scrollbar' ] ],
       \   },
       \   'inactive': {
-      \     'left': [ [ 'pwd' ] ],
+      \     'left': [ [ 'filename' ] ],
       \     'right': [ [ 'lineinfo' ], [ 'fileinfo' ], [ 'scrollbar' ] ],
       \   },
       \   'tabline': {
@@ -550,7 +551,7 @@ let g:ale_sign_warning = '⚠'
 " let g:jsx_ext_required = 1
 " let g:ale_linter_aliases = {'javascript.jsx': 'javascript', 'jsx': 'javascript'}
 let g:ale_enabled = 1
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_sign_column_always = 1
 let g:ale_lint_delay=1000
 
