@@ -120,3 +120,6 @@ source $ZSH/oh-my-zsh.sh
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+

@@ -240,8 +240,8 @@ let g:onedark_terminal_italics=1
 
 let g:oceanic_next_terminal_bold = 1
 let g:oceanic_next_terminal_italic = 1
-colorscheme OceanicNext
-" colorscheme onedark
+"colorscheme OceanicNext
+colorscheme onedark
 " packadd! gruvbox
 let g:gruvbox_italic=1
 let g:gruvbox_italicize_comments = 1
