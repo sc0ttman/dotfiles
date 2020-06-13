@@ -23,6 +23,8 @@ ZSH_THEME="spaceship"
 
 TERM=xterm-256color
 
+source ~/.aliases
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -82,8 +84,8 @@ TERM=xterm-256color
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git 
-  osx 
+  git
+  osx
   rails
 )
 
@@ -118,8 +120,3 @@ source $ZSH/oh-my-zsh.sh
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
-
-
-  # Set Spaceship ZSH as a prompt
-  autoload -U promptinit; promptinit
-  prompt spaceship
