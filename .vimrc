@@ -1,57 +1,58 @@
-packadd minpac
+call plug#begin('~/.vim/plugged')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Minpac plugins
-
-call minpac#init()
-call minpac#add('k-takata/minpac', {'type':'opt'})
-call minpac#add('itchyny/lightline.vim')
-call minpac#add('mgee/lightline-bufferline')
-call minpac#add('gcavallanti/vim-noscrollbar')
-" call minpac#add('altercation /vim-colors-solarized')
-call minpac#add('joshdick/onedark.vim') " Theme
-call minpac#add('https://github.com/ap/vim-css-color') " Display colors behind css hex codes
-call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " Theme
-" call minpac#add('rakr/vim-one')
-call minpac#add('mhartington/oceanic-next')
-call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
-call minpac#add('junegunn/fzf.vim')
-call minpac#add('junegunn/vim-peekaboo') " hit \" or @ in normal mode or <CTRL-R> in insert
-call minpac#add('junegunn/gv.vim') " Git file history :GV
-call minpac#add('mileszs/ack.vim')
-call minpac#add('vim-ruby/vim-ruby')
-call minpac#add('kana/vim-textobj-user')  " dependency for rubyblock
-call minpac#add('nelstrom/vim-textobj-rubyblock') " adds ar and ir (all and inner)
-" call minpac#add('ntpeters/vim-better-whitespace')
-call minpac#add('pangloss/vim-javascript')
-call minpac#add('elmcast/elm-vim')
-call minpac#add('elixir-lang/vim-elixir')
-" call minpac#add('mxw/vim-jsx')
-" call minpac#add('mattn/emmet-vim')
-call minpac#add('tpope/vim-rails')
-call minpac#add('tpope/vim-commentary')
-call minpac#add('tpope/vim-fugitive')
-call minpac#add('tpope/vim-surround')
-" call minpac#add('tpope/vim-unimpaired')
-call minpac#add('tpope/vim-endwise') " Autocompletes method definitions
-" call minpac#add('prettier/vim-prettier')
-call minpac#add('w0rp/ale')
-call minpac#add('maximbaz/lightline-ale')
-call minpac#add('scrooloose/nerdtree')
-call minpac#add('cskeeters/vim-smooth-scroll')
-" call minpac#add('terryma/vim-multiple-cursors') " seems to cause errors
-call minpac#add('Xuyuanp/nerdtree-git-plugin')
-call minpac#add('airblade/vim-gitgutter')
-call minpac#add('janko-m/vim-test')
-call minpac#add('jgdavey/tslime.vim') " Allows vim to access tmux sessions
-" call minpac#add('godlygeek/tabular')
-call minpac#add('christoomey/vim-tmux-navigator')
-call minpac#add('kassio/neoterm')
-" call minpac#add('jiangmiao/auto-pairs')
-call minpac#add('machakann/vim-highlightedyank') " highlight yank
-call minpac#add('ryanoasis/vim-devicons') " MUST load after NERDTREE and other NERD-enabled plugins
+" Plugins
+Plug 'k-takata/minpac', {'type':'opt'}
+Plug 'itchyny/lightline.vim'
+Plug 'mgee/lightline-bufferline'
+Plug 'gcavallanti/vim-noscrollbar'
+" Plug 'altercation /vim-colors-solarized'
+Plug 'joshdick/onedark.vim' " Theme
+Plug 'https://github.com/ap/vim-css-color' " Display colors behind css hex codes
+Plug 'morhetz/gruvbox', {'type': 'opt'} " Theme
+" Plug 'rakr/vim-one'
+Plug 'mhartington/oceanic-next'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo' " hit \" or @ in normal mode or <CTRL-R> in insert
+Plug 'junegunn/gv.vim' " Git file history :GV
+Plug 'mileszs/ack.vim'
+Plug 'vim-ruby/vim-ruby'
+Plug 'kana/vim-textobj-user'  " dependency for rubyblock
+Plug 'nelstrom/vim-textobj-rubyblock' " adds ar and ir (all and inner
+" Plug 'ntpeters/vim-better-whitespace'
+Plug 'pangloss/vim-javascript'
+Plug 'elmcast/elm-vim'
+Plug 'elixir-lang/vim-elixir'
+" Plug 'mxw/vim-jsx'
+" Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-endwise' " Autocompletes method definitions
+" Plug 'prettier/vim-prettier'
+Plug 'w0rp/ale'
+Plug 'maximbaz/lightline-ale'
+Plug 'scrooloose/nerdtree'
+Plug 'cskeeters/vim-smooth-scroll'
+" Plug 'terryma/vim-multiple-cursors' " seems to cause errors
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'airblade/vim-gitgutter'
+Plug 'janko-m/vim-test'
+Plug 'jgdavey/tslime.vim' " Allows vim to access tmux sessions
+" Plug 'godlygeek/tabular'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'kassio/neoterm'
+" Plug 'jiangmiao/auto-pairs'
+Plug 'machakann/vim-highlightedyank' " highlight yank
+Plug 'ryanoasis/vim-devicons' " MUST load after NERDTREE and other NERD-enabled plugins
 " You must build the extension: ~/.vim/pack/minpac/start/YouCompleteMe
-" call minpac#add('Valloric/YouCompleteMe', {'do' : './install.py' })
+" Plug 'Valloric/YouCompleteMe', {'do' : './install.py' }
+
+" Initialize plugin system
+call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
@@ -505,12 +506,6 @@ function! Fzf_dev()
        \            l:fzf_files_options,
        \ 'down':    '40%' })
 endfunction
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" minpac
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! PackUpdate call minpac#update()
-command! PackClean call minpac#clean()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ack

@@ -70,10 +70,13 @@ Also, make sure to turn on the option: `General > Selection > Applications in te
 Install the latest vim from Homebrew:
 `$ brew install vim` or `neovim`
 
-Install Ctags
-`$ brew install ctags`
-
 Install Minpac: https://github.com/k-takata/minpac#linux-macos
+
+Install Plug: https://github.com/junegunn/vim-plug
+```sh
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+```
 
 Create the following folders as set in the `.vimrc`
 ```
