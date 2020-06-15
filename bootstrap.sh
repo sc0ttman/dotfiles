@@ -26,10 +26,16 @@ brews () {
       grep
       zsh
       zsh-completions
+      tmux
+      neovim
+      ffmpeg
+      imagemagick
       fzf
       mysql@5.7
       node
       yarn
+      gnupg
+      pinentry-mac
     )
     echo "Installing formulae..."
     brew install ${CASKS[@]}
@@ -48,6 +54,7 @@ brews () {
       sequel-pro
       sourcetree
       itsycal
+      lepton
     )
     echo "Installing apps..."
     brew cask install ${CASKS[@]}

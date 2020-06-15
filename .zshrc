@@ -10,6 +10,7 @@ export ZSH="/Users/scott/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
 ZSH_THEME="spaceship"
+# ZSH_THEME="random"
 
 # spaceship
 #SPACESHIP_PROMPT_ADD_NEWLINE="true"
@@ -29,7 +30,7 @@ source ~/.aliases
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" "kafeitu" "dstufft" "duellj")
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
