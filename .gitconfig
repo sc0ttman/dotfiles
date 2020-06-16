@@ -1,6 +1,6 @@
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore_global
+  excludesfile = /Users/scott/.gitignore_global
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
   pager = "less -F -X"
 [merge]
@@ -78,4 +78,10 @@
   cpc = cherry-pick --continue
   #############
 [gpg]
-	program = gpg
+  program = gpg
+[difftool "sourcetree"]
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path =
+[mergetool "sourcetree"]
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true

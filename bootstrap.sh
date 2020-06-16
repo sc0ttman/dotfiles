@@ -38,7 +38,7 @@ brews () {
       pinentry-mac
     )
     echo "Installing formulae..."
-    brew install ${CASKS[@]}
+    brew install ${FORMULAE[@]}
 
     # brew install caskroom/cask/brew-cask
     CASKS=(
@@ -46,15 +46,14 @@ brews () {
       atom
       iterm2
       slack
-      google-chrome
-      karabiner-elements
       rectangle
-      brave-browser
-      google-chrome
       sequel-pro
       sourcetree
       itsycal
       lepton
+      brave-browser
+      google-chrome
+      karabiner-elements
     )
     echo "Installing apps..."
     brew cask install ${CASKS[@]}

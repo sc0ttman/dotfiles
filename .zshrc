@@ -22,10 +22,6 @@ ZSH_THEME="spaceship"
 #SPACESHIP_PROMPT_FIRST_PREFIX_SHOW="true"
 #SPACESHIP_USER_SHOW="true"
 
-TERM=xterm-256color
-
-source ~/.aliases
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -90,8 +86,6 @@ plugins=(
   rails
 )
 
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -118,6 +112,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+TERM=xterm-256color
+source ~/.aliases
+
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
@@ -126,3 +123,10 @@ eval "$(rbenv init -)"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $ZSH/oh-my-zsh.sh
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+eval "$(rbenv init -)"
