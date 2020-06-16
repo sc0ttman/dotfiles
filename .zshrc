@@ -22,6 +22,9 @@ ZSH_THEME="spaceship"
 #SPACESHIP_PROMPT_FIRST_PREFIX_SHOW="true"
 #SPACESHIP_USER_SHOW="true"
 
+autoload -U compinit
+compinit
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
