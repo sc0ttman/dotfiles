@@ -35,6 +35,8 @@ alias undopush="git push -f origin HEAD^:master"
 
 # rails
 alias migrate="bundle exec rake db:migrate db:test:prepare"
+alias br="bin/rails"
+alias bc="bin/console"
 alias be="bundle exec "
 alias sk="bundle exec sidekiq -q high -q default -q low"
 alias es="elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml"

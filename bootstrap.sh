@@ -71,7 +71,7 @@ link () {
   read resp
   # TODO - regex here?
   if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-    for file in $( ls -A | grep -vE '\.exclude*|\.example|\.git/|\.gitignore|bootstrap.sh|\.DS_Store|\.osx|iterm|fonts|.*.md' ) ; do
+    for file in $( ls -A | grep -vE '\.exclude*|\.example|\.git/|\.gitignore|bootstrap.sh|\.DS_Store|\.vim|\.osx|iterm|fonts|.*.md' ) ; do
       ln -sv "$PWD/$file" "$HOME"
     done
     # TODO copy
