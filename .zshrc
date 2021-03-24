@@ -87,6 +87,7 @@ plugins=(
   git
   osx
   rails
+  zsh-autosuggestions
 )
 
 # User configuration
@@ -129,6 +130,32 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PARALLEL_TEST_PROCESSORS=4
+export SPACESHIP_DOCKER_SHOW=false
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(rbenv init -)"
+
+# https://www.thetopsites.net/article/59632283.shtml
+# ulimit -n 65536
+ulimit -Sn 10240
+
+
+# color-ssh() {
+#     trap "colorterm.sh" INT EXIT
+#     if [[ "$*" =~ "prod" ]]; then
+#         colorterm.sh prod
+#     elif [[ "$*" =~ "dev" ]]; then
+#         colorterm.sh dev
+#     else
+#         colorterm.sh other
+#     fi
+#     echo "$*"
+#     ssh "$*"
+# }
+# compdef _ssh color-ssh=ssh
+# alias ssh=color-ssh
+
+# Automatic profile switching
+source ~/.iterm2_shell_integration.zsh
+

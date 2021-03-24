@@ -1,6 +1,6 @@
 trailingComma: "es5"
 tabWidth: 2
-printWidth: 290
+printWidth: 210
 semi: false
 singleQuote: true
 jsxBracketSameLine: true

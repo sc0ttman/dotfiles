@@ -43,7 +43,6 @@
 [rebase]
   autosquash = true
 [alias]
-  ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
   c = commit
   cm = commit -m
   co = checkout
@@ -85,3 +84,6 @@
 [mergetool "sourcetree"]
   cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
   trustExitCode = true
+[user]
+	name = Scott Luedtke
+	email = scott1979+git@gmail.com

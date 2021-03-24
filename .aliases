@@ -23,6 +23,13 @@ alias reload="exec ${SHELL} -l"
 # GIT STUFF
 alias prune_origin="git remote prune origin"
 alias prune_local="git branch --merged master | grep -v 'master$' | xargs git branch -d"
+alias gcm="git checkout master"
+alias gcs="git checkout scott"
+alias grm="git rebase master"
+
+# Cron stuff
+alias newcron="env EDITOR=nvim crontab -e" #open a new crontab
+alias cronjobs="crontab -l" # list our cronjobs
 
 # Edit Configs
 alias ez="v ~/.zshrc"
