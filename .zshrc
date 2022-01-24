@@ -85,7 +85,7 @@ compinit
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  osx
+  macos
   rails
   zsh-autosuggestions
 )
