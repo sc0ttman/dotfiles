@@ -63,14 +63,16 @@ Get the latest version at http://www.iterm2.com/
 Download a theme from here: https://github.com/mbadolato/iTerm2-Color-Schemes
 Or use one of the files in the repo. `TheOne.itermcolors` or `ayu.itermcolors`
 
-Make sure to change the font to `Meslo LG L DZ Regular for Powerline` (Or one of the other Meslo fonts) so the custom characters work.
+Make sure to change the font to `Sauce Code Pro Nerd Font Complete Mono` or `Meslo LG L DZ Regular for Powerline` (Or one of the other Meslo fonts) so the custom characters work.
+
+Grab a nerd fonts here: https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf
+
+
 Also, make sure to turn on the option: `General > Selection > Applications in terminal may access clipboard`.
 
 ## Vim
 Install the latest vim from Homebrew:
 `$ brew install vim` or `neovim`
-
-Install Minpac: https://github.com/k-takata/minpac#linux-macos
 
 Install Plug: https://github.com/junegunn/vim-plug
 ```sh

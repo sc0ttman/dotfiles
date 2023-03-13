@@ -4,6 +4,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/scott/.oh-my-zsh"
 
+export EDITOR=nvim
+export BETTER_ERRORS_EDITOR=code
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -21,6 +24,7 @@ ZSH_THEME="spaceship"
 #SPACESHIP_PROMPT_DEFAULT_PREFIX="$USER"
 #SPACESHIP_PROMPT_FIRST_PREFIX_SHOW="true"
 #SPACESHIP_USER_SHOW="true"
+export SPACESHIP_DOCKER_SHOW=false
 
 autoload -U compinit
 compinit
@@ -123,23 +127,17 @@ source ~/.aliases
 GPG_TTY=$(tty)
 export GPG_TTY
 export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
 
 source $ZSH/oh-my-zsh.sh
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-export PARALLEL_TEST_PROCESSORS=4
-export SPACESHIP_DOCKER_SHOW=false
+
+export PARALLEL_TEST_PROCESSORS=8
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-eval "$(rbenv init -)"
 
 # https://www.thetopsites.net/article/59632283.shtml
 # ulimit -n 65536
 ulimit -Sn 10240
-
 
 # color-ssh() {
 #     trap "colorterm.sh" INT EXIT
@@ -159,3 +157,28 @@ ulimit -Sn 10240
 # Automatic profile switching
 source ~/.iterm2_shell_integration.zsh
 
+# Intel homebrew paths
+# export PATH="/usr/local/opt/ruby/bin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
+# export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+# export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+# export PATH=/opt/homebrew/bin:/usr/local/opt/openssl@1.1/bin:/usr/local/opt/mysql@5.7/bin:/usr/local/sbin:/usr/local/opt/ruby/bin:/Users/scott/.rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+# export MINIO_ACCESS_KEY=minioACCESS
+# export MINIO_SECRET_KEY=minioSECRET
+# export MINIO_ROOT_USER=minioACCESS
+# export MINIO_ROOT_PASSWORD=minioSECRET
+
+# M1 homebrew paths
+export PATH="/opt/homebrew/opt/opencv@2/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@14/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="/opt/homebrew/opt/mysql@5.7/bin:$PATH"
+
+eval "$(rbenv init -)"
+
+if [ $(command -v direnv) ]; then
+  eval "$(direnv hook zsh)"
+fi
